@@ -1,0 +1,34 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: timesample
+  name: timesample
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: timesample
+  type: LoadBalancer
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: timesample
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: timesample
+    spec:
+      containers:
+      - name: timesample
+        image: harbor.pks.pcfgcp.jagapps.co/jaimegag/spring-boot-timesample:v1.0.0
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: regsecret
