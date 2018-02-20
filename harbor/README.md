@@ -3,7 +3,7 @@ This guide provides sample yamls and basic instructions to use with Harbor. It a
 
 Identify your `<HARBOR_DOMAIN>` as we will refere to it during the next steps.
 
-For more details on how to use Harbor check the [Harbor repository](https://github.com/vmware/harbor) and in particular the [user guide](https://github.com/vmware/harbor/blob/master/docs/user_guide.md).
+For more details on how to use Harbor check the [Harbor GitHub repository](https://github.com/vmware/harbor) and in particular the [user guide](https://github.com/vmware/harbor/blob/master/docs/user_guide.md).
 
 ## My first Harbor app
 Locate the Harbor Project (`<HARBOR_PROJECT>`) you will be using to push & pull images, or create a new one via Harbor GUI. More on managing projects [here](https://github.com/vmware/harbor/blob/master/docs/user_guide.md#managing-projects).
