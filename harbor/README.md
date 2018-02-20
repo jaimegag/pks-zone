@@ -21,6 +21,7 @@ Tag an existing docker image with the Harbor Domain and Project using docker CLI
 - Run: `docker tag IMAGE[:TAG] <HARBOR_DOMAIN>/<HARBOR_PROJECT>/IMAGE[:TAG]`
 - Exmaple: `docker tag jaimegag/spring-boot-timesample:latest harbor.pks.pcfgcp.jagapps.co/jaimegag/spring-boot-timesample:v1.0.0`
 - Here I’m using an image previously pulled from Docker Hub: `jaimegag/spring-boot-timesample`
+  - Here's the [app code and Docker file](https://github.com/jaimegag/spring-boot-timesample)
 
 Push the tagged image to Harbor using docker CLI
 - Tag an image ...
