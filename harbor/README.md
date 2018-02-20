@@ -16,6 +16,11 @@ Login to Harbor with docker CLI
 - Example: `docker login harbor.pks.pcfgcp.jagapps.co`
 - When prompted enter a username & password from a Harbor account with permissions to push images.
 
+Tag an existing docker image with the Harbor Domain and Project
+- Run: `docker tag IMAGE[:TAG] <HARBOR_DOMAIN>/<HARBOR_PROJECT>/IMAGE[:TAG]`
+- Exmaple: `docker tag jaimegag/spring-boot-timesample:latest harbor.pks.pcfgcp.jagapps.co/jaimegag/spring-boot-timesample:v1.0.0`
+- Here I’m using an image previously pulled from Docker Hub: `jaimegag/spring-boot-timesample`
+
 Push an image to Harbor with docker CLI
 - Tag an image ...
 - Run `docker push <HARBOR_DOMAIN>/<HARBOR_PROJECT>/IMAGE[:TAG]`.
