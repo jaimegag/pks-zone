@@ -57,5 +57,5 @@ If next time you want to save yourself all those separate steps you can deploy a
 kubectl create -f ingress-rbac-allinone.yml
 ```
 
-Here's a diagram to illustrate the deployments and services in use, courtesy of @datianshi.
+Here's a diagram to illustrate the deployments and services in use, courtesy of @datianshi. In that diagram there are two applications configured for Ingress instead of the one we created above, but the mechanics are the same.
 ![IDEA](https://raw.githubusercontent.com/datianshi/ingress-kubo-poc/master/images/PKS-Ingress-Nginx.png)
