@@ -1,5 +1,5 @@
 # Ingress
-This guide provides steps and configuration samples to deploy an nginix Ingress Controller and connect it to an application using an Ingress resource.
+This guide provides steps and configuration samples to deploy an nginx Ingress Controller and connect it to an application using an Ingress resource.
 
 An Ingress Controller is a daemon, deployed as a Kubernetes Pod, that watches the apiserver's `/ingresses` endpoint for updates to the [Ingress resource](https://kubernetes.io/docs/concepts/services-networking/ingress/). Its job is to satisfy requests for Ingresses.
 This example requires RBAC to be enabled as it will use a specific Service Account with a Role that allows the Ingress Controller to connect to the apiserver to do its job.
@@ -52,5 +52,5 @@ If you set the Ingress Controller service as `type: NodePort` then you need to d
 - Get the NodePort assigned to the `nginx-ingress-controller` service from the last `kubectl` command you run. It'll be the port in the 3XXXX range.
 - Now you can access the app  by accessing `http://<NODE-IP>:<NODE-PORT>/timesample`. Example: `http://35.229.102.160:31324/timesample`
 
-Here's a diagram to illustrate the deployments and services in use, courtesy of @datianshi
+Here's a diagram to illustrate the deployments and services in use, courtesy of @datianshi.
 ![IDEA](https://raw.githubusercontent.com/datianshi/ingress-kubo-poc/master/images/PKS-Ingress-Nginx.png)
