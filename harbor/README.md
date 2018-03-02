@@ -1,4 +1,4 @@
-# Harbor Samples  
+# Harbor  
 This guide provides sample yamls and basic instructions to use with Harbor. It assumes you have a working Harbor installation and Kubernetes cluster.
 
 Make sure to identify your `<HARBOR_DOMAIN>` as we will refere to it during the next steps.
