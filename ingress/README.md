@@ -1,4 +1,4 @@
-# Ingress Example
+# Ingress
 This guide provides steps and configuration samples to deploy an nginix Ingress Controller and connect it to an application using an Ingress resource.
 
 An Ingress Controller is a daemon, deployed as a Kubernetes Pod, that watches the apiserver's `/ingresses` endpoint for updates to the [Ingress resource](https://kubernetes.io/docs/concepts/services-networking/ingress/). Its job is to satisfy requests for Ingresses.
