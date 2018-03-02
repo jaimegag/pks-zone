@@ -1,0 +1,20 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: timesample-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/ssl-redirect: "false"
+  namespace: ingress-nginx
+spec:
+  tls:
+  - secretName: tls-kubernetes
+  rules:
+  - http:
+      paths:
+      - path: /timesample
+        backend:
+          serviceName: timesample
+          servicePort: 80

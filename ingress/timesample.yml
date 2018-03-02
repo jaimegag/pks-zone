@@ -1,0 +1,18 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: timesample
+  namespace: ingress-nginx
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: timesample
+    spec:
+      containers:
+      - name: spring-boot-timesample
+        image: jaimegag/spring-boot-timesample
+        ports:
+        - containerPort: 8080

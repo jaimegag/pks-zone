@@ -71,7 +71,6 @@ spec:
     targetPort: 8080
   selector:
     k8s-app: default-http-backend
-
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -137,46 +136,43 @@ spec:
   selector:
     k8s-app: nginx-ingress-controller
   type: LoadBalancer
-
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    name: simple-http-server
-  name: simple-http-server
+    name: timesample
+  name: timesample
   namespace: ingress-nginx
 spec:
   ports:
-    - port: 82
+    - port: 80
       targetPort: 8080
   selector:
-    app: simple-http-server
-
+    app: timesample
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: simple-http-server
+  name: timesample
   namespace: ingress-nginx
 spec:
   replicas: 3
   template:
     metadata:
       labels:
-        app: simple-http-server
+        app: timesample
     spec:
       containers:
-      - name: simple-http-server
-        image: trinitronx/python-simplehttpserver
+      - name: spring-boot-timesample
+        image: jaimegag/spring-boot-timesample
         ports:
         - containerPort: 8080
-
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: ingress
+  name: timesample-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
     ingress.kubernetes.io/rewrite-target: /
@@ -188,7 +184,7 @@ spec:
   rules:
   - http:
       paths:
-      - path: /simple-http-server
+      - path: /timesample
         backend:
-          serviceName: simple-http-server
-          servicePort: 82
+          serviceName: timesample
+          servicePort: 80
