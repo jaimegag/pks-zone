@@ -1,5 +1,5 @@
 # pks-zone
-Kubernetes resources and demos tested in PKS
+Kubernetes resources and demos tested on PKS
 
 [Harbor](harbor/)
 
