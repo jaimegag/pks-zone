@@ -1,9 +1,13 @@
 # Harbor  
 This guide provides sample yamls and basic instructions to use with Harbor. It assumes you have a working Harbor installation and Kubernetes cluster.
+Make sure you clone this repo to get access to the yml files in it that will be referenced during this tutorial.
 
-Make sure to identify your `<HARBOR_DOMAIN>` as we will refere to it during the next steps.
+Make also sure to identify your `<HARBOR_DOMAIN>` as we will refer to it during the next steps.
 
 For more details on how to use Harbor check the [Harbor GitHub repository](https://github.com/vmware/harbor) and in particular the [user guide](https://github.com/vmware/harbor/blob/master/docs/user_guide.md).
+
+## Prerequisites
+You'll need a provisioned kubernetes cluster, and access to it via `kubectl`
 
 ## My first Harbor app
 Locate the Harbor Project (`<HARBOR_PROJECT>`) you will be using to push & pull images, or create a new one via Harbor GUI. More on managing projects [here](https://github.com/vmware/harbor/blob/master/docs/user_guide.md#managing-projects).
