@@ -61,14 +61,10 @@ If you set the Ingress Controller service as `type: NodePort` then you need to d
 - Grab the IP of one of the worker nodes. Make sure it is routable, or you'll have to assign a public IP to it or put a LB with a public IP in front of the workers.
 - Get the NodePort assigned to the `nginx-ingress-controller` service from the last `kubectl` command you run. It'll be the port in the 3XXXX range.
 - Now you can access the app  by accessing `http://<NODE-IP>:<NODE-PORT>/timesample`. Example: `http://35.229.102.160:31324/timesample`
-<<<<<<< HEAD
-=======
 
 If next time you want to save yourself all those separate steps you can deploy a single yaml with all incldued:
 ```
 kubectl create -f ingress-rbac-allinone.yml
 ```
-
 Here's a diagram to illustrate the deployments and services in use, courtesy of @datianshi. In that diagram there are two applications configured for Ingress instead of the one we created above, but the mechanics are the same.
 ![IDEA](https://raw.githubusercontent.com/datianshi/ingress-kubo-poc/master/images/PKS-Ingress-Nginx.png)
->>>>>>> 7650f1e6fc2ba8ce2a3c9c30f1c2cfb5a0a51cd4
