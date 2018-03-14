@@ -5,4 +5,4 @@ Kubernetes resources and demos tested in PKS
 
 [Ingress](ingress/)
 
-[Elastic-Search](elasticsearch/)
+[Elastic-Search](elastic-search/)
