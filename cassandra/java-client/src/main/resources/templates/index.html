@@ -1,0 +1,61 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE HTML>
+<head>
+    <title>Casandra Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css"
+          href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Spring Boot Cassandra Demo</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+
+    <h1 class="page-header">NY State Species</h1>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>County</th>
+                    <th>Category</th>
+                    <th>Taxonomy Group</th>
+                    <th>Taxonomy SubGroup</th>
+                    <th>Scientific Name</th>
+                    <th>Common Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="species : ${allSpecies}">
+                    <td th:text="${species.id}"></td>
+                    <td th:text="${species.county}"></td>
+                    <td th:text="${species.category}"></td>
+                    <td th:text="${species.taxonomy_g}"></td>
+                    <td th:text="${species.taxonomy_sg}"></td>
+                    <td th:text="${species.sci_name}"></td>
+                    <td th:text="${species.common_name}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script type="text/javascript"
+        src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

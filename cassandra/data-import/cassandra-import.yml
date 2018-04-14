@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cassandra-pks-demo-bootstrap
+  labels:
+    app: cassandra-pks-demo
+spec:
+  template:
+    metadata:
+      name: cassandra-pks-demo-bootstrap
+      labels:
+        app: cassandra-pks-demo
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: bootstrap
+        image: jaimegag/alpine-cqlsh:latest
+        imagePullPolicy: Always
+        command:
+        - /bin/ash
+        - /config/import.sh
+        volumeMounts:
+        - name: config
+          mountPath: /config
+      volumes:
+      - name: config
+        configMap:
+          name: cassandra-pks-demo-bootstrap
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cassandra-pks-demo-bootstrap
+  labels:
+    app: cassandra-pks-demo
+data:
+  import.cql: |
+    CREATE KEYSPACE pks WITH replication = {'class' : 'SimpleStrategy', 'replication_factor' : 1};
+    CREATE TABLE pks.species (
+            id int PRIMARY KEY,
+            county text,
+            category text,
+            taxonomy_g text,
+            taxonomy_sg text,
+            sci_name text,
+            common_name text
+           );
+    COPY pks.species FROM 'animals_and_plants_per_county_clean_id.csv' WITH DELIMITER=',' AND HEADER=TRUE;
+  import.sh: |
+    #!/bin/ash
+
+    curl -JOL https://s3.amazonaws.com/jaguilar-data-sets/animals_and_plants_per_county_clean_id.csv
+    cqlsh cassandra-pks-demo-0.cassandra-pks-demo.default.svc.cluster.local 9042 -f /config/import.cql
