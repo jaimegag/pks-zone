@@ -1,0 +1,118 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE HTML>
+<head>
+    <title>Casandra Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css"
+          href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css"
+          href="/css/main.css" />
+</head>
+<body>
+
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Spring Boot Cassandra Demo</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><img class="adj" src="/img/spring-boot.png" /></li>
+                <li><img class="adj" src="/img/cassandra.png" /></li>
+                <li><a href="/">Home</a></li>
+                <li class="active"><a href="#">Search</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+
+    <div>
+        <h2 class="page-header">Search By Common Name</h2>
+        <div>
+            <form action="#" th:action="@{/search}" th:object="${searchCommon}" method="post">
+                <div class="form-group">
+                    <label class="col-sm-2 col-form-label">Common Name:</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" th:field="*{commonName}" />
+                    </div>
+                    <button type="submit" class="btn btn-info">Submit</button>
+                </div>
+            </form>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>County</th>
+                    <th>Category</th>
+                    <th>Taxonomy Group</th>
+                    <th>Taxonomy SubGroup</th>
+                    <th>Scientific Name</th>
+                    <th>Common Name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="species1 : ${speciesByCommonName}">
+                    <td th:text="${species1.id}"></td>
+                    <td th:text="${species1.county}"></td>
+                    <td th:text="${species1.category}"></td>
+                    <td th:text="${species1.taxonomy_g}"></td>
+                    <td th:text="${species1.taxonomy_sg}"></td>
+                    <td th:text="${species1.sci_name}"></td>
+                    <td th:text="${species1.common_name}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div>
+        <h2 class="page-header">Search By County</h2>
+        <div>
+            <form action="#" th:action="@{/search}" th:object="${searchCounty}" method="post">
+                <div class="form-group">
+                    <label class="col-sm-2 col-form-label">County:</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" th:field="*{county}" />
+                    </div>
+                    <button type="submit" class="btn btn-info">Submit</button>
+                </div>
+            </form>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>County</th>
+                    <th>Category</th>
+                    <th>Taxonomy Group</th>
+                    <th>Taxonomy SubGroup</th>
+                    <th>Scientific Name</th>
+                    <th>Common Name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="species2 : ${speciesByCounty}">
+                    <td th:text="${species2.id}"></td>
+                    <td th:text="${species2.county}"></td>
+                    <td th:text="${species2.category}"></td>
+                    <td th:text="${species2.taxonomy_g}"></td>
+                    <td th:text="${species2.taxonomy_sg}"></td>
+                    <td th:text="${species2.sci_name}"></td>
+                    <td th:text="${species2.common_name}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
+<script type="text/javascript"
+        src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>

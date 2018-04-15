@@ -8,4 +8,4 @@ CREATE TABLE pks.species (
         sci_name text,
         common_name text
        );
-COPY pks.species FROM 'animals_and_plants_per_county_clean_id.csv' WITH DELIMITER=',' AND HEADER=TRUE;
+COPY pks.species (id,county,category,taxonomy_g,taxonomy_sg,sci_name,common_name) FROM 'species_nyc.csv' WITH DELIMITER=',' AND HEADER=TRUE;
