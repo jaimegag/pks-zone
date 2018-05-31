@@ -1,0 +1,128 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: ci-storage
+provisioner: kubernetes.io/vsphere-volume
+parameters:
+  diskformat: zeroedthick
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: ci-claim
+  annotations:
+    volume.beta.kubernetes.io/storage-class: ci-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ci-storage
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-master
+  labels:
+    app: redis
+    tier: backend
+    role: master
+spec:
+  ports:
+  - port: 6379
+    targetPort: 6379
+  selector:
+    app: redis
+    tier: backend
+    role: master
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: redis-master
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis
+        role: master
+        tier: backend
+    spec:
+      containers:
+      - name: master
+        # image: gcr.io/google_containers/redis:e2e  # or just image: redis
+        image: knodir/redis
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - mountPath: "/data" # This is the default for redis
+          name: ci-data
+      volumes:
+        - name: ci-data
+          persistentVolumeClaim:
+            claimName: ci-claim
+---
+# For the PV stories it makes more sense to not have real redis-slaves
+# as we can't be sure where the data is coming from
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-slave
+  labels:
+    app: redis
+    tier: backend
+    role: master
+spec:
+  ports:
+  - port: 6379
+  selector:
+    app: redis
+    tier: backend
+    role: master
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  labels:
+    app: guestbook
+    tier: frontend
+    http-route-sync: pv-guestbook
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+  selector:
+    app: guestbook
+    tier: frontend
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: guestbook
+        tier: frontend
+    spec:
+      containers:
+      - name: php-redis
+        image: gcr.io/google-samples/gb-frontend:v4
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        env:
+        - name: GET_HOSTS_FROM
+          value: dns
+        ports:
+        - containerPort: 80
