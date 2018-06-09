@@ -1,15 +1,16 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: cassandra-pks-demo-bootstrap
+  name: cassandra-demo-bootstrap
   labels:
-    app: cassandra-pks-demo
+    app: cassandra-demo-bootstrap
+  namespace: pks-workshop
 spec:
   template:
     metadata:
-      name: cassandra-pks-demo-bootstrap
+      name: cassandra-demo-bootstrap
       labels:
-        app: cassandra-pks-demo
+        app: cassandra-demo-bootstrap
     spec:
       restartPolicy: OnFailure
       containers:
@@ -25,14 +26,15 @@ spec:
       volumes:
       - name: config
         configMap:
-          name: cassandra-pks-demo-bootstrap
+          name: cassandra-demo-bootstrap-config
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cassandra-pks-demo-bootstrap
+  name: cassandra-demo-bootstrap-config
   labels:
-    app: cassandra-pks-demo
+    app: cassandra-demo-bootstrap
+  namespace: pks-workshop
 data:
   import.cql: |
     CREATE KEYSPACE pks WITH replication = {'class' : 'SimpleStrategy', 'replication_factor' : 1};
@@ -50,4 +52,4 @@ data:
     #!/bin/ash
 
     curl -JOL https://s3.amazonaws.com/jaguilar-data-sets/species_nyc.csv
-    cqlsh cassandra-pks-demo-0.cassandra-pks-demo.default.svc.cluster.local 9042 -f /config/import.cql
+    cqlsh cassandra-demo-cluster-app-0.cassandra-demo-cluster-service.pks-workshop.svc.cluster.local 9042 -f /config/import.cql

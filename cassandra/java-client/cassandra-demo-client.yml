@@ -1,0 +1,54 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cassandra-demo-client-service
+  labels:
+    app: cassandra-demo-client
+  namespace: pks-workshop
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: cassandra-demo-client-app
+  type: LoadBalancer
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cassandra-demo-client-app
+  labels:
+    app: cassandra-demo-client
+  namespace: pks-workshop
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: cassandra-demo-client-app
+    spec:
+      containers:
+      - name: cassandra-demo-client-app
+        image: harbor.pks.pcfgcp.jagapps.co/jaimegag/cassandra-demo:v1.0.0
+        ports:
+        - containerPort: 8080
+        env:
+        - name: vcap.services.cassandra-pks.credentials.hostname
+          valueFrom:
+            configMapKeyRef:
+              name: cassandra-demo-client-config
+              key: hostname
+      imagePullSecrets:
+      - name: regsecret
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cassandra-demo-client-config
+  labels:
+    app: cassandra-demo-client
+  namespace: pks-workshop
+data:
+  hostname: cassandra-demo-cluster-service.pks-workshop.svc.cluster.local
