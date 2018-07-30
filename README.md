@@ -6,3 +6,7 @@ Kubernetes resources and demos tested on PKS
 [Ingress](ingress/)
 
 [Elastic-Search](elastic-search/)
+
+[Cassandra](cassandra/)
+
+[Guestbook](guestbook/)

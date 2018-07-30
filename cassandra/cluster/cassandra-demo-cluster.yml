@@ -85,7 +85,6 @@ spec:
       name: cassandra-data
     spec:
       accessModes: [ "ReadWriteOnce" ]
-#      storageClassName: fast
       storageClassName: standard
       resources:
         requests:
