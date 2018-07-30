@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
       - name: cassandra-demo-client-app
-        #image: harbor.pks.pcfgcp.jagapps.co/jaimegag/cassandra-demo:v1.0.0
+        #image: jaimegag/cassandra-demo
         image: harbor.haas-136.pez.pivotal.io/library/cassandra-demo:v1.0.0
         ports:
         - containerPort: 8080

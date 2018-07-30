@@ -43,5 +43,5 @@ kubectl apply -f cassandra-demo-client.yml
 A `type: LoadBalancer` service is deployed alongside the client Deployment to allow access to the 3-replica based application.
 For the LB to work your PKS installation needs to run on GCP or be integrated with NSX-T.
 
-Here's a screenshot with how it looks like.
+Use the external LoadBalancer IP to access the client UI. Here's a screenshot with how it looks like:
 ![IMAGE](images/client_snapshot.png)
