@@ -1,6 +1,8 @@
 # Cassandra  
 This guide provides sample yamls to deploy a 3-node stateful-set Cassandra cluster, load data from an external data set and to deploy a java client dashboard.
+
 Cluster uses the DockerHub Official Cassandra image maintained by Docker community. The main intention of this repo is demonstrate a stateful-set workload and not to recommend this specific Cassandra deployment.
+
 Make sure you clone this repo to get access to the yml files in it that will be referenced during this tutorial.
 
 ## Prerequisites
@@ -40,5 +42,6 @@ kubectl apply -f cassandra-demo-client.yml
 ```
 A `type: LoadBalancer` service is deployed alongside the client Deployment to allow access to the 3-replica based application.
 For the LB to work your PKS installation needs to run on GCP or be integrated with NSX-T.
+
 Here's a screenshot with how it looks like.
-[!IMAGE](cassandra/images/client_snapshot.png)
+![IMAGE](images/client_snapshot.png)
