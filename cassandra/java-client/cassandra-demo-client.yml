@@ -31,8 +31,7 @@ spec:
     spec:
       containers:
       - name: cassandra-demo-client-app
-        #image: jaimegag/cassandra-demo
-        image: harbor.haas-136.pez.pivotal.io/library/cassandra-demo:v1.0.0
+        image: jaimegag/cassandra-demo
         ports:
         - containerPort: 8080
         env:
@@ -41,8 +40,6 @@ spec:
             configMapKeyRef:
               name: cassandra-demo-client-config
               key: hostname
-      imagePullSecrets:
-      - name: regsecret
 ---
 apiVersion: v1
 kind: ConfigMap

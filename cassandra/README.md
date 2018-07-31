@@ -9,6 +9,12 @@ Make sure you clone this repo to get access to the yml files in it that will be 
 You'll need a provisioned kubernetes cluster, and access to it via `kubectl`
 You'll need worker nodes with at least 4GB RAM
 
+## Create namespace
+Run this command
+```
+kubectl create namespace pks-workshop
+```
+
 ## Deploy the Cassandra cluster
 Make sure you have defined a default Storage Class named `default`.
 Run this command if on vSphere without one:

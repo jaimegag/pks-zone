@@ -1,0 +1,8 @@
+applications:
+- name: cassandra-demo
+  memory: 1G
+  instances: 1
+  host: cassandra-demo
+  path: ./target/cassandra-demo-0.0.1-SNAPSHOT.jar
+  services:
+  - cassandra-pks
