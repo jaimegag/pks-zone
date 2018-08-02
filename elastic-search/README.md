@@ -18,7 +18,7 @@ You'll need a provisioned kubernetes cluster with at least 2 worker nodes and pr
 
   On vSphere:
   ```
-  kubectl create -f storage-class-vsphere
+  kubectl create -f storage-class-vsphere.yml
   ```
 
 2. Create Persistent Volume claim
