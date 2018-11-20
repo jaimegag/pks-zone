@@ -15,12 +15,19 @@ Run this command
 kubectl create namespace pks-workshop
 ```
 
-## Deploy the Cassandra cluster
-Make sure you have defined a default Storage Class named `default`.
-Run this command if on vSphere without one:
+## Configure Storage class
+Make sure you have defined a default Storage Class named `standard` in your cluster. If you don't have one, then run the following command:
+
+For vSphere
 ```
 kubectl create -f cluster/storage-class-vsphere.yml
 ```
+For GCP
+```
+kubectl create -f cluster/storage-class-gcp-lb.yml
+```
+
+## Deploy the Cassandra cluster
 Install 3-node stateful-set cluster running this command:
 ```
 kubectl apply -f cluster/cassandra-demo-cluster.yml
@@ -38,16 +45,38 @@ For the LB to work your PKS installation needs to run on GCP or be integrated wi
 ## Bootstrap Cassandra cluster with a sample data set
 The following command will bootstrap the Cassandra cluster with a keyspace and a table loaded with data from a sample NYC Species data-set, using a ConfigMap and an external file with the raw data.
 ```
-kubectl apply -f cassandra-demo-bootstrap.yml
+kubectl apply -f data-import/cassandra-demo-bootstrap.yml
 ```
 
 ## Deploy a client UI
 The following command will deploy a Spring Boot app with a UI to be used as a client targeting the Cassandra cluster, with a couple of queries/searches to simulate access to the data:
 ```
-kubectl apply -f cassandra-demo-client.yml
+kubectl apply -f java-client/cassandra-demo-client.yml
 ```
 A `type: LoadBalancer` service is deployed alongside the client Deployment to allow access to the 3-replica based application.
 For the LB to work your PKS installation needs to run on GCP or be integrated with NSX-T.
 
 Use the external LoadBalancer IP to access the client UI. Here's a screenshot with how it looks like:
 ![IMAGE](images/client_snapshot.png)
+
+## Deploy a client UI in PAS
+If you have Pivotal Application Service you can also deploy the java application there and configure a User Provided Service for the client app to be able to talk to the Cassandra cluster.
+The below steps assume you have already targeted a PAS API and logged in with you CF CLI.
+
+First step is to edit the `java-client/cassandra-user-provided-service.json` and replace the `hostname` value with the `EXTERNAL-IP` of the service `cassandra-demo-cluster-external`. You can get that IP by running this command:
+```
+kubectl get service cassandra-demo-cluster-external -n pks-workshop -o jsonpath="{.status.loadBalancer.ingress[0].ip}"
+```
+
+Next we need to create a User Provided Service with that configuration. Run the following command:
+```
+cf cups cassandra-pks -p java-client/cassandra-user-provided-service.json
+```
+
+Finally deploy the application to PAS. Make sure you use the `java-client/manifest.yml` provided:
+```
+cd java-client
+cf push
+```
+
+Once the deployment finishes, just grab the app URL provided back by the PAS API and open it in your browser.
