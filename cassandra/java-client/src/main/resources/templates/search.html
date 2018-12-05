@@ -4,9 +4,9 @@
     <title>Casandra Demo</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css"
-          href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+          th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
     <link rel="stylesheet" type="text/css"
-          href="/css/main.css" />
+          th:href="@{/css/main.css}" />
 </head>
 <body>
 
@@ -18,9 +18,9 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><img class="adj" src="/img/spring-boot.png" /></li>
-                <li><img class="adj" src="/img/cassandra.png" /></li>
-                <li><a href="/">Home</a></li>
+                <li><img class="adj" th:src="@{/img/spring-boot.png}" /></li>
+                <li><img class="adj" th:src="@{/img/cassandra.png}" /></li>
+                <li><a th:href="@{/}">Home</a></li>
                 <li class="active"><a href="#">Search</a></li>
             </ul>
         </div>
@@ -114,5 +114,5 @@
 </div>
 
 <script type="text/javascript"
-        src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
 </body>

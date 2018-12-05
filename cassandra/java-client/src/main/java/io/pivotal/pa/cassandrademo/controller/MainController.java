@@ -17,14 +17,14 @@ public class MainController {
     @Autowired
     private SpeciesRepo repo;
 
-    @RequestMapping(value = "/")
+    @RequestMapping(value = {"/","/cassandra"})
     public String index(Model model) {
         //model.addAttribute("allSpecies", repo.findAll());
         model.addAttribute("allSpecies", repo.getLimitedSpecies(100));
         return "index";
     }
 
-    @RequestMapping(value = "/search")
+    @RequestMapping(value = {"/search","/cassandra/search"})
     public String search(@ModelAttribute("searchCommon") SearchForm searchCommon,
                          @ModelAttribute("searchCounty") SearchForm searchCounty,
                          BindingResult bindingResult, Model model) {

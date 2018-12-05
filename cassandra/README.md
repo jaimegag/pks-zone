@@ -63,6 +63,19 @@ For the LB to work your PKS installation needs to run on GCP or be integrated wi
 Use the external LoadBalancer IP to access the client UI. Here's a screenshot with how it looks like:
 ![IMAGE](images/client_snapshot.png)
 
+## Deploy a client UI integrated with Istio IngressGateway
+The following command will deploy the same Spring Boot client app , but this time Envoy will be injeted in every pod, and a Gateway+VirtualService will be created to enable ingress traffic through the Istio IngressGateway into the pods. You'll need istio CLI in the PATH:
+```
+kubectl apply -f <(istioctl kube-inject -f cassandra-demo-client-istio.yml)
+```
+The VirtualService configuration will match all requests to the Istio IngressGateway that start with `/cassandra` context-path.
+
+Use the external LoadBalancer IP/hostname of the Istio IngressGateway appending `/cassandra` to access the client UI. Example:
+```
+http://a3eb4cf47f5ce11e8b0d70642f9d6604-1311692810.us-east-1.elb.amazonaws.com/cassandra
+```
+
+
 ## Deploy a client UI in PAS
 If you have Pivotal Application Service you can also deploy the java application there and configure a User Provided Service for the client app to be able to talk to the Cassandra cluster.
 The below steps assume you have already targeted a PAS API and logged in with you CF CLI.
