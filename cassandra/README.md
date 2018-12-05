@@ -26,6 +26,10 @@ For GCP
 ```
 kubectl create -f cluster/storage-class-gcp-lb.yml
 ```
+For AWS
+```
+kubectl create -f cluster/storage-class-aws-lb.yml
+```
 
 ## Deploy the Cassandra cluster
 Install 3-node stateful-set cluster running this command:
