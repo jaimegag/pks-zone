@@ -1,0 +1,142 @@
+Starting point
+- Alana and Cody can login
+- Cluster platform-services exists with PSM and PBS installed
+
+Demo flow
+- Test quotas to create aws1 as small-psp
+- Test get-kubeconfig in aws1
+- Test PSP on aws1
+- Test sinks on platform-services
+- Test update-cluster on aws1
+
+---------------------
+Set LDAP group scopes
+---------------------
+uaac target https://api.pks.pcf-aws.jagapps.co:8443 --skip-ssl-validation
+uaac token client get admin -s XXXXXXXXXXX
+uaac group map --name pks.clusters.admin cn=admins,ou=Users,o=5ca651a9852eac5d7270fe5a,dc=jumpcloud,dc=com
+uaac group map --name pks.clusters.manage cn=clusteradmins,ou=Users,o=5ca651a9852eac5d7270fe5a,dc=jumpcloud,dc=com
+
+
+-------------------
+      QUOTAS
+-------------------
+
+# Alana login
+pks login -a api.pks.pcf-aws.jagapps.co -u alana -p 'XXXXXXX' -k; \
+export AUTH_TOKEN=$(bosh int ~/.pks/creds.yml --path /access_token)
+
+# View quotas
+curl -k -H "Authorization: Bearer $AUTH_TOKEN" \
+https://api.pks.pcf-aws.jagapps.co:9021/v1beta1/quotas
+
+# View Usage
+curl -k -H "Authorization: Bearer $AUTH_TOKEN" \
+https://api.pks.pcf-aws.jagapps.co:9021/v1beta1/usages
+
+# Set quotas
+curl -k -X POST \
+-H "Authorization: Bearer $AUTH_TOKEN" \
+-H "Content-Type: application/json" \
+-d \
+'{ "owner": "cody", "limit": { "cpu": 5, "memory": 20 } }' \
+https://api.pks.pcf-aws.jagapps.co:9021/v1beta1/quotas
+
+# Update quotas
+curl -k -X PATCH -H "Authorization: Bearer $AUTH_TOKEN" \
+-H "Content-Type: application/json" \
+-d \
+'{ "owner": "cody", "limit": { "cpu": 10, "memory": 30 } }' \
+https://api.pks.pcf-aws.jagapps.co:9021/v1beta1/quotas/cody
+
+# Cody login
+pks login -a api.pks.pcf-aws.jagapps.co -u cody -p 'Pivotal123!' -k
+
+# Create cluster
+pks create-cluster aws2 -e aws2.clusters.pcf-aws.jagapps.co -p small --wait
+"Error: You do not have enough privileges to perform this action. Please contact the PKS administrator."
+
+# Alana login
+# Delete quotas or update above 8 and 30
+curl -k -X DELETE -H "Authorization: Bearer $AUTH_TOKEN" \
+https://api.pks.pcf-aws.jagapps.co:9021/v1beta1/quotas/cody
+
+# Cody login
+# Create cluster
+"Success"
+
+-------------------
+Test get-kubeconfig
+-------------------
+
+# Naomi get-kubeconfig
+pks get-kubeconfig aws1 -a api.pks.pcf-aws.jagapps.co -u naomi -p 'XXXXXXX' -k
+
+# Check anything, fails
+kubectl get all
+
+# Cody login
+# Cody get credentials
+# Apply roles for Naomi
+kubectl apply -f edit-role-default.yml
+kubectl apply -f naomi-rolebinding-default.yml
+
+# Naomi get-kubeconfig
+# Check anything, works
+kubectl get all
+
+
+----------------
+      PSP
+----------------
+https://docs.pivotal.io/pks/1-4/pod-security-policy.html
+
+# Naomi deplopys busybox, fails
+kubectl apply -f busybox.yml
+
+# Cody login
+# Cody get credentials
+# Cody creates ClusterRole to use existing pks-restricted PSP
+kubectl apply -f psp-restricted-clusterrole.yml
+# Cody creates ClusterRoleBinding to bind previous ClusterRole to Naomi
+kubectl apply -f psp-restricted-naomi-clusterrolebinding.yml
+
+# Naomi get-kubeconfig
+# Naomi deplopys busybox, works
+kubectl apply -f busybox.yml
+
+# Naomi deploys busybox deployment, fails
+kubectl apply -f busybox-dep.yml
+
+# Cody login
+# Cody get credentials
+# Cody apply ClusterRoleBinding to bind previous ClusterRole also to default ServiceAccount
+kubectl apply -f default-psp-restricted-clusterrolebinding.yml
+
+# Naomi get-kubeconfig
+# Naomi deploys busybox deployment, works
+kubectl apply -f busybox-dep.yml
+
+
+----------------
+      Sinks
+----------------
+
+# Cody logins
+# Cody get credentials
+# Cody creates Sink for default namespace
+kubectl apply -f s-priv.yml
+
+# Cody creates ClusterMetricsSink
+kubectl apply -f cms-priv.yml
+
+
+----------------
+ Resize Cluster
+----------------
+# Cody login
+# Cody resize to less nodes
+pks update-cluster aws1 --num-nodes 2
+# Cody resize to more nodes
+pks update-cluster aws1 --num-nodes 3
+

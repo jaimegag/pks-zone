@@ -1,0 +1,11 @@
+apiVersion: apps.pivotal.io/v1beta1
+kind: Sink
+metadata:
+   name: sink
+   namespace: default
+spec:
+   type: syslog
+   host: logs.papertrailapp.com
+   port: XXXXX
+   enable_tls: true
+
