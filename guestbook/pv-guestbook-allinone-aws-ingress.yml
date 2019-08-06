@@ -98,7 +98,7 @@ metadata:
     app: guestbook
     tier: frontend
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
   - port: 80
   selector:
@@ -130,3 +130,17 @@ spec:
           value: dns
         ports:
         - containerPort: 80
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: frontend
+  namespace: demo
+spec:
+  rules:
+  - host: frontend.ingress.aws1.pks.pcf-aws.jagapps.co
+    http:
+      paths:
+      - backend:
+          serviceName: frontend
+          servicePort: 80
