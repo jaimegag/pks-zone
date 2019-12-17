@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: iis
+  name: iis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: iis
+  template:
+    metadata:
+      labels:
+        run: iis
+    spec:
+      containers:
+      - image: mcr.microsoft.com/windows/servercore/iis
+        name: iis
+      nodeSelector:
+        kubernetes.io/os: windows
+      tolerations:
+      - key: "windows"
+        operator: "Equal"
+        value: "2019"
+        effect: "NoSchedule"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: iis
+  name: iis
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: iis
+  type: NodePort

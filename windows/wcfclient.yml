@@ -1,0 +1,45 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: windowsclientwcf
+  name: windowsclientwcf
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: windowsclientwcf
+      name: windowsclientwcf
+    spec:
+      containers:
+      - name: windowsclientwcf
+        image: mcr.microsoft.com/dotnet/framework/samples:wcfclient
+        ports:
+        - containerPort: 80
+        env:
+        - name: HOST
+          value: 10.100.200.223
+      nodeSelector:
+        kubernetes.io/os: windows
+      tolerations:
+      - key: "windows"
+        operator: "Equal"
+        value: "2019"
+        effect: "NoSchedule"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: windowsclientwcf
+  name: windowsclientwcf
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: windowsclientwcf
+  type: NodePort

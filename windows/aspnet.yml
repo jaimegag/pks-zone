@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: aspnet
+  name: aspnet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: aspnet
+  template:
+    metadata:
+      labels:
+        run: aspnet
+    spec:
+      containers:
+      - image: mcr.microsoft.com/dotnet/framework/samples:aspnetapp
+        name: aspnet
+      nodeSelector:
+        kubernetes.io/os: windows
+      tolerations:
+      - key: "windows"
+        operator: "Equal"
+        value: "2019"
+        effect: "NoSchedule"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: aspnet
+  name: aspnet
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: aspnet
+  type: NodePort

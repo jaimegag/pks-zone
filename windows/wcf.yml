@@ -1,0 +1,42 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: windowsservicewcf
+  name: windowsservicewcf
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: windowsservicewcf
+      name: windowsservicewcf
+    spec:
+      containers:
+      - name: windowsservicewcf
+        image: mcr.microsoft.com/dotnet/framework/samples:wcfservice
+        ports:
+        - containerPort: 80
+      nodeSelector:
+        kubernetes.io/os: windows
+      tolerations:
+      - key: "windows"
+        operator: "Equal"
+        value: "2019"
+        effect: "NoSchedule"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: windowsservicewcf
+  name: windowsservicewcf
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: windowsservicewcf
+  type: ClusterIP
