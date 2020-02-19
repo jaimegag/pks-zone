@@ -93,7 +93,6 @@ metadata:
   labels:
     app: guestbook
     tier: frontend
-    http-route-sync: pv-guestbook
 spec:
   type: NodePort
   ports:
