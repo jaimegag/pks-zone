@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: dotnetcorewin
+  name: dotnetcorewin
+  namespace: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: dotnetcorewin
+  template:
+    metadata:
+      labels:
+        run: dotnetcorewin
+    spec:
+      containers:
+      - image: harbor.haas-450.pez.pivotal.io/windows/dotnetcoresamples:aspnetapp
+        name: dotnetcorewin
+      nodeSelector:
+        kubernetes.io/os: windows
+      tolerations:
+      - key: "windows"
+        operator: "Equal"
+        value: "2019"
+        effect: "NoSchedule"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: dotnetcorewin
+  name: dotnetcorewin
+  namespace: demo
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: dotnetcorewin
+  type: NodePort
