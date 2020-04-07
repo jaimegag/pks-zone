@@ -1,0 +1,9 @@
+apiVersion: pksapi.io/v1beta1
+kind: ClusterMetricSink
+metadata:
+  name: datadog-sink
+spec:
+  inputs:
+  outputs:
+  - type: datadog
+    apikey: XXXXXXXXXX

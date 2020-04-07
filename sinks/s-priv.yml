@@ -1,0 +1,11 @@
+apiVersion: pksapi.io/v1beta1
+kind: Sink
+metadata:
+   name: demo-logs-sink
+   namespace: demo
+spec:
+   type: syslog
+   host: logs.papertrailapp.com
+   port: 41372
+   enable_tls: true
+

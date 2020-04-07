@@ -1,0 +1,10 @@
+apiVersion: pksapi.io/v1beta1
+kind: MetricSink
+metadata:
+  name: app-influxdb-ms
+  namespace: demo
+spec:
+  outputs:
+  - type: influxdb
+    urls: 
+    - http://cluster-metric-sink-service.pks-system.svc.cluster.local

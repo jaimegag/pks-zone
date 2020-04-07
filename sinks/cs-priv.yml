@@ -1,0 +1,10 @@
+apiVersion: pksapi.io/v1beta1
+kind: ClusterSink
+metadata:
+   name: cluster-sink
+spec:
+   type: syslog
+   host: logs.papertrailapp.com
+   port: 41372
+   enable_tls: true
+
