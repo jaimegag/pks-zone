@@ -4,6 +4,7 @@ metadata:
   name: app-influxdb-ms
   namespace: demo
 spec:
+  inputs:
   outputs:
   - type: influxdb
     urls: 

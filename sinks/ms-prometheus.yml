@@ -1,0 +1,11 @@
+apiVersion: pksapi.io/v1beta1
+kind: MetricSink
+metadata:
+  name: prom-ms-demo
+  namespace: demo
+spec:
+  inputs:
+  outputs:
+  - type: prometheus_client
+    listen: ":9979"
+    path: "/metrics"
