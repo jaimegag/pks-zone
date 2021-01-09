@@ -4,7 +4,7 @@ metadata:
   labels:
     app.kubernetes.io/name: prometheus-example-app
   name: prometheus-example-app
-  namespace: demo
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -31,7 +31,7 @@ metadata:
   labels:
     app.kubernetes.io/name: prometheus-example-app
   name: prometheus-example-app
-  namespace: demo
+  namespace: default
 spec:
   ports:
   - port: 8080
@@ -39,4 +39,4 @@ spec:
     targetPort: 8080
   selector:
     app.kubernetes.io/name: prometheus-example-app
-  type: LoadBalancer
+  type: NodePort
