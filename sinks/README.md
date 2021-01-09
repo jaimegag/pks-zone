@@ -38,7 +38,7 @@ Change from NodePort to LoadBalancer if your cluster allows it.
 
 5. Visit the prometheus client running on any worker node of the cluster on port `9978` and you should see the metrics from the example app. This `/metrics` endpoint can now be scraped by any prometheus instance.
 
-Together with the application custom metrics, Telegraf also includes the many additional `kubernetes_pod_` and `kubernetes_system_` metrics, thanks to the [Kubernetes Input Plugin](https://github.com/influxdata/telegraf/tree/1.13.2/plugins/inputs/kubernetes).
+Together with the application custom metrics, Telegraf also includes many additional `kubernetes_pod_` and `kubernetes_system_` metrics, thanks to the [Kubernetes Input Plugin](https://github.com/influxdata/telegraf/tree/1.13.2/plugins/inputs/kubernetes).
 
 ## Adding in Healthwatch 2.0
 
