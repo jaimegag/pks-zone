@@ -57,4 +57,4 @@ Configure a grafana query with the following settings.
 Metrics: `http_requests_total_counter`
 
 Sample:
-![grafana](./grafana.png)
+![grafana](./Grafana.png)
