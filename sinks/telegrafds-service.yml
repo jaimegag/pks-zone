@@ -13,3 +13,4 @@ spec:
   selector:
     app: telegraf
   type: ClusterIP
+  sessionAffinity: ClientIP
