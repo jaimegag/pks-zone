@@ -14,3 +14,5 @@ Kubernetes resources and demos tested on PKS
 [Concourse Helm Chart](concourse/)
 
 [Istio](istio/)
+
+[Sinks](sinks/)

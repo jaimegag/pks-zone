@@ -7,9 +7,11 @@ This section includes a few examples on how to leverage the [PKS Sink architectu
 This example sets up a cluster metric sink(CMS) and a metric sink(MS). The MS is to capture custom metrics from prometheus annotated pods in the namespace and forward those metrics to the CMS. The CMS will then expose all aggregated metrics on a single prometheus `/metrics` enpoint.
 This makes it use the built in discovery to aggregate metrics that can be scraped by an external prometheus instance.
 
-We setup the CMS with a [influxdb_listener](https://github.com/influxdata/telegraf/tree/master/plugins/inputs/influxdb_listener) input. The MS in the namespace then can have a [influxdb](https://github.com/influxdata/telegraf/tree/master/plugins/outputs/influxdb) output that send metric to the listener. It also requires a `service` to be set up on the CMS so that the MS can use k8s dns to resolve the listener. We also need to enable a [prometheus](https://github.com/influxdata/telegraf/tree/master/plugins/outputs/prometheus_client) output on the CMS.
+We setup the CMS with a [influxdb_listener](https://github.com/influxdata/telegraf/tree/master/plugins/inputs/influxdb_listener) input. The MS in the namespace then can have a [influxdb](https://github.com/influxdata/telegraf/tree/master/plugins/outputs/influxdb) output that send metric to the CMS influxdb listener. It also requires a `service` to be set up on the CMS so that the MS can use k8s dns to resolve the listener. We also need to enable a [prometheus](https://github.com/influxdata/telegraf/tree/master/plugins/outputs/prometheus_client) output on the CMS.
 
 The last piece is to configure Healthwatch 2.0 to scrap these metrics.
+
+![howitworks](./diagram.png)
 
 ## Install
 
@@ -36,7 +38,9 @@ Change from NodePort to LoadBalancer if your cluster allows it.
 
 4. Visit the app on the `/metrics` endpoint; the counter will increase as you refresh
 
-5. Visit the prometheus client running on any worker node of the cluster on port `9978` and you should see the metrics from the example app. This `/metrics` endpoint can now be scraped by any prometheus instance.
+5. Visit the Prometheus client running on the worker node on port `9978` and you should see the metrics from the example app. This `/metrics` endpoint can now be scraped by any Prometheus instance.
+
+The CMS is backed by a Telegraf DaemonSet that runs on any worker node, and to prevent the metrics sink from sending the app metrics randomly to any of the CMS DS pods we have enable sessionAffinity in the telegrafds-service to target only one of the pods. This means you may need to try on each worker node on port `9978` until you find your metrics if you want to check this at the Prometheus client directly. This is obviously not necessary, and it's only for test purposes, and you should not need worker node info when you check the metrics in Grafana.
 
 Together with the application custom metrics, Telegraf also includes many additional `kubernetes_pod_` and `kubernetes_system_` metrics, thanks to the [Kubernetes Input Plugin](https://github.com/influxdata/telegraf/tree/1.13.2/plugins/inputs/kubernetes).
 
@@ -52,6 +56,8 @@ dns_sd_configs:
   type: A
   port: 9978
 ```
+> Note: to try different queries you can check Bosh documentation [here](https://bosh.io/docs/dns/#constructing-queries)
+
 
 Configure a grafana query with the following settings.
 Metrics: `http_requests_total_counter`
