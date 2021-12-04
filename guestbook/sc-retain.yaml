@@ -1,0 +1,8 @@
+allowVolumeExpansion: true
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: sc-retain
+provisioner: csi.vsphere.vmware.com
+reclaimPolicy: Retain
+volumeBindingMode: Immediate

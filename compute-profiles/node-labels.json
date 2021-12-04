@@ -1,0 +1,14 @@
+{
+  "name": "custom-node-labes-compute-profilei-2",
+  "description": "custom-node-labels-compute-profile",
+  "parameters": {
+    "cluster_customization": {
+      "node_pools": [{
+          "name": "default",
+          "instances": 1,
+          "node_labels": "k1=v1,k2=v2"
+        }
+      ]
+    }
+  }
+}

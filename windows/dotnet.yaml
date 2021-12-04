@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: dotnet
+  name: dotnet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: dotnet
+  template:
+    metadata:
+      labels:
+        run: dotnet
+    spec:
+      containers:
+      - image: harbor.tkgi-vsp-lab.hyrulelab.com/windows/dotnetapp:latest
+      #- image: mcr.microsoft.com/dotnet/framework/samples:dotnetapp
+        name: dotnet
+      nodeSelector:
+        kubernetes.io/os: windows
+      tolerations:
+      - key: "windows"
+        operator: "Equal"
+        value: "2019"
+        effect: "NoSchedule"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: dotnet
+  name: dotnet
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: dotnet
+  type: NodePort

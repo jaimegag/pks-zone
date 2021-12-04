@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    fcd-id: daaeef87-38e1-4ba7-9060-9517b2d49839
+  name: static-pv-guestbook
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  csi:
+    driver: csi.vsphere.vmware.com
+    fsType: ext4
+    volumeAttributes:
+      type: vSphere CNS Block Volume
+    volumeHandle: daaeef87-38e1-4ba7-9060-9517b2d49839
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
